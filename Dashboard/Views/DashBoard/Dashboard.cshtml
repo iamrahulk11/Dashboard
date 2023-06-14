@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+<style>
+  
+</style>
+<br />
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<div class="container">
+    <h1 class="text-center text-info">Total Data</h1>
+    <div class="row">
+        <div class="col-6">
+            <canvas class="col-md-2" id="myChart" style="max-width:500px;max-height:400px;padding:5px"></canvas>
+        </div>
+
+        <div class="col-6">
+            <canvas class="col-md-2" id="myChart2" style="max-width:650px;max-height:400px;padding:5px;margin-right:10px"></canvas>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        getData();
+    });
+
+        function getData() {
+            $.ajax({
+                type: "GET",
+                url: "/DashBoard/getData",
+                contentType: false,
+                dataType: "json",
+                data:"",
+                success: OnSuccessResult,
+                    
+                error: onerror
+            })
+            function OnSuccessResult(data) {
+                alert('welcome')
+                const ctx = document.getElementById('myChart');
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Student', 'Faculty', 'Admin'],
+                        datasets: [{
+                            label: 'Total Users',
+                            data: [data[0], data[1], data[2]],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                       
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                const ctx2 = document.getElementById('myChart2');
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Student', 'Faculty', 'Admin'],
+                        datasets: [{
+                            label: 'Total Users',
+                            data: [data[0], data[1], data[2]],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+        }
+       
+</script>
+
+
